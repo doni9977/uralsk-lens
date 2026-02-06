@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Галерея — Уральск</title>
+  <link rel="stylesheet" href="/client/assets/css/style.css" />
+  <link rel="stylesheet" href="/client/assets/css/auth.css" />
+  <link rel="stylesheet" href="/client/assets/css/gallery.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="contact">📧 Редакция: info@uralsk.city &nbsp; ☎ +7 711 123 4567</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/client/index.html">Главная</a></li>
+        <li><a href="/client/gellery.html">Галерея</a></li>
+        <li><a href="/client/map.html">Карта</a></li>
+        <li><a href="/client/photo.html">Загрузить</a></li>
+        <li><a href="/client/profile.html">Профиль</a></li>
+        <li><a href="/client/login.html">Войти</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+    <section class="hero">
+      <h1>Галерея Уральска</h1>
+      <p>Лучшие фотографии города — лайки, комментарии и подробный просмотр.</p>
+    </section>
+
+    <section class="gallery">
+      <div class="gallery-controls">
+        <div class="view-toggle"><button id="gridView" class="active">Сетка</button></div>
+        <div class="search-wrapper"><input id="searchInput" placeholder="Поиск по заголовку или описанию..."></div>
+      </div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+    </section>
+
+    <!-- modal and markup used by index.js -->
+    <div id="photoModal" class="modal" aria-hidden="true">
+      <div class="dialog">
+        <button id="modalClose" class="modal-close">×</button>
+        <div class="content">
+          <div class="left"><img id="modalImage" src="" alt=""></div>
+          <div class="right">
+            <h3 id="modalTitle"></h3>
+            <div class="modal-actions"><button id="likeBtn">❤ <span id="likeCount">0</span></button></div>
+            <div id="modalComments" class="comments-list"></div>
+            <form id="commentForm" class="comment-form"><input id="commentInput" placeholder="Оставьте комментарий..." required><button>Отправить</button></form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <footer class="footer">© Портфолио Уральска</footer>
+
+  <script type="module" src="/client/js/pages/index.js"></script>
+  <script type="module" src="/client/js/components/auth.js"></script>
+</body>
+</html>

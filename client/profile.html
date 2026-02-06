@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Профиль — Уральск</title>
+  <link rel="stylesheet" href="/client/assets/css/style.css" />
+  <link rel="stylesheet" href="/client/assets/css/auth.css" />
+  <link rel="stylesheet" href="/client/assets/css/gallery.css" />
+  <style>
+    .profile-card {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .profile-avatar {
+      margin-bottom: 16px;
+    }
+    .profile-avatar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .avatar-placeholder {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+      font-size: 60px;
+      line-height: 120px;
+    }
+    .profile-info h2 {
+      margin: 8px 0;
+    }
+    .profile-info .email {
+      color: #666;
+      font-size: 14px;
+    }
+    .profile-info .bio {
+      margin: 8px 0;
+      color: #555;
+    }
+    .profile-info .role {
+      font-size: 12px;
+      color: #999;
+      margin-top: 8px;
+    }
+    .profile-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-primary {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+    .edit-form {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .edit-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .edit-form input,
+    .edit-form textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-family: inherit;
+    }
+    .edit-form button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 0;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="contact">📧 Редакция: info@uralsk.city &nbsp; ☎ +7 711 123 4567</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/client/index.html">Главная</a></li>
+        <li><a href="/client/gellery.html">Галерея</a></li>
+        <li><a href="/client/map.html">Карта</a></li>
+        <li><a href="/client/photo.html">Загрузить</a></li>
+        <li><a href="/client/profile.html">Профиль</a></li>
+        <li><a href="/client/login.html">Войти</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+    <div id="profileContent"></div>
+  </main>
+  <footer class="footer">© Портфолио Уральска</footer>
+  <script type="module" src="/client/js/pages/profile.js"></script>
+</body>
+</html>

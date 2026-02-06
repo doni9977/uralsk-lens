@@ -1,0 +1,83 @@
+/* Auth form styles */
+.auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.auth-form input,
+.auth-form textarea {
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fafafa;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.auth-form input:focus,
+.auth-form textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(42, 90, 79, 0.08);
+}
+
+.auth-form button{
+  background:var(--green);
+  color:#fff;
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.auth-form button:hover {
+  background: #1d3f38;
+  box-shadow: 0 2px 8px rgba(42, 90, 79, 0.12);
+}
+
+.auth-panel{
+  max-width:420px;
+  margin:60px auto;
+  padding:32px;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+
+.auth-panel h2 {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  color: var(--green);
+}
+
+.auth-panel p {
+  text-align: center;
+  color: #666;
+  margin-top: 16px;
+}
+
+.auth-panel a {
+  color: var(--green);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.18s;
+}
+
+.auth-panel a:hover {
+  opacity: 0.75;
+}
+
+/* Auth modal (if used in modal) */
+.auth-modal {
+  display: none !important;
+}
+
+.auth-modal.show {
+  display: flex !important;
+}

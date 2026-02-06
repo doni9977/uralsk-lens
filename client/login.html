@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Вход — Уральск</title>
+  <link rel="stylesheet" href="/client/assets/css/style.css" />
+  <link rel="stylesheet" href="/client/assets/css/auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="contact">📧 Редакция: info@uralsk.city &nbsp; ☎ +7 711 123 4567</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/client/index.html">Главная</a></li>
+        <li><a href="/client/gellery.html">Галерея</a></li>
+        <li><a href="/client/map.html">Карта</a></li>
+        <li><a href="/client/photo.html">Загрузить</a></li>
+        <li><a href="/client/profile.html">Профиль</a></li>
+        <li><a href="/client/login.html">Войти</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+    <div class="auth-panel">
+      <h2>Вход</h2>
+      <form id="loginForm" class="auth-form" method="post">
+        <input name="email" type="email" placeholder="Email" required />
+        <input name="password" type="password" placeholder="Пароль" required />
+        <button type="submit">Войти</button>
+      </form>
+      <p>Нет аккаунта? <a href="/client/register.html">Зарегистрируйтесь</a></p>
+    </div>
+  </main>
+  <footer class="footer">© Портфолио Уральска</footer>
+  <script type="module" src="/client/js/pages/login.js"></script>
+</body>
+</html>
