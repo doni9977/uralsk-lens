@@ -79,9 +79,8 @@
   - Key: `title` (Text) — обязательное
   - Key: `description` (Text) — опционально
   - Key: `category` (Text) — опционально (e.g., Architecture, Nature)
-  - Key: `lat` (Text) — опционально
-  - Key: `lng` (Text) — опционально
 - Успех: HTTP 201, возвращается объект Photo с полем `imageUrl` (пример `/uploads/1645123-...jpg`).
+    - Примечание: координаты `lat/lng` сейчас не используются на фронтенде.
 
 5) Получить список фото
 - Method: GET
@@ -104,8 +103,8 @@
 - GET `{{baseUrl}}/api/albums` — список альбомов
 - POST `{{baseUrl}}/api/albums/:id/add` — protected, Body JSON: `{ "photoId": "<photoId>" }`
 
-9) Карта и категории
-- GET `{{baseUrl}}/api/photos/map` — фото с геоданными (lat,lng)
+9) Карта (опционально) и категории
+- GET `{{baseUrl}}/api/photos/map` — фото с геоданными (если координаты есть)
 - GET `{{baseUrl}}/api/categories` — список уникальных категорий
 
 ---
@@ -140,3 +139,23 @@ curl -X POST {{baseUrl}}/api/photos \
 - Если вы запустили без корректного `MONGO_URI`, в логах увидите ошибку подключения — сервер всё равно запустится, но CRUD будет недоступен.
 - Переменная `PORT` контролирует порт сервера. Чтобы временно запустить на 8080: `PORT=8080 npm run dev`.
 - Файлы загруженные в `uploads/` не должны попадать в репозиторий — `.gitignore` содержит `uploads/`.
+
+---
+
+## 7) Валидация и обработка ошибок
+
+### Валидация входящих данных
+Используется `express-validator` в роутерах:
+- Auth (email, password): [app/routes/auth.routes.js](app/routes/auth.routes.js)
+- Фото (id, title): [app/routes/photo.routes.js](app/routes/photo.routes.js)
+- Альбомы (title, id, photoId): [app/routes/album.routes.js](app/routes/album.routes.js)
+- Комментарии (id, text): [app/routes/comment.routes.js](app/routes/comment.routes.js)
+
+### Обработка ошибок
+- 400 — ошибки валидации (возвращается список ошибок).
+- 401 — нет токена/невалидный токен.
+- 403 — нет прав доступа.
+- 404 — ресурс не найден.
+- 500 — внутренняя ошибка сервера.
+
+Глобальный обработчик ошибок и 404 находятся в [server.js](server.js).
