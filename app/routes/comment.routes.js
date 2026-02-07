@@ -2,7 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const comment = require('../controllers/comment.controller');
-const { verifyToken } = require('../middlewares/authJwt');
+const { verifyToken, isRole } = require('../middlewares/authJwt');
 
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
@@ -22,6 +22,7 @@ router.post('/api/photos/:id/comments', [
 
 router.delete('/api/comments/:id', [
 	verifyToken,
+	isRole('admin'),
 	check('id').isMongoId().withMessage('Invalid comment id')
 ], validate, comment.deleteComment);
 

@@ -2,7 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const photo = require('../controllers/photo.controller');
-const { verifyToken } = require('../middlewares/authJwt');
+const { verifyToken, isRole } = require('../middlewares/authJwt');
 const upload = require('../middlewares/upload.middleware');
 
 const validate = (req, res, next) => {
@@ -20,6 +20,7 @@ router.get('/api/photos/:id', [
 
 router.post('/api/photos', [
   verifyToken,
+  isRole('photographer','admin'),
   upload.single('image'),
   check('title').notEmpty().withMessage('Title required')
 ], validate, photo.createPhoto);

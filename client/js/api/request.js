@@ -69,6 +69,9 @@ export async function login(email, password) {
   if (data.token) {
     setAuthToken(data.token);
   }
+  if (data.user) {
+    localStorage.setItem('user', JSON.stringify(data.user));
+  }
   return data;
 }
 
