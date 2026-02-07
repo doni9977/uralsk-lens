@@ -107,6 +107,45 @@
 - GET `{{baseUrl}}/api/photos/map` — фото с геоданными (если координаты есть)
 - GET `{{baseUrl}}/api/categories` — список уникальных категорий
 
+### Новые эндпоинты RBAC и управления ролями
+
+10) Назначить фотографом (admin-only)
+- Method: PUT
+- URL: `{{baseUrl}}/api/users/:id/set-photographer`
+- Header: `Authorization: Bearer {{token}}`
+- Доступно только admin. Меняет роль пользователя на photographer.
+
+11) Список пользователей (admin-only)
+- Method: GET
+- URL: `{{baseUrl}}/api/users`
+- Header: `Authorization: Bearer {{token}}`
+- Доступно только admin. Возвращает список всех пользователей.
+
+12) Сменить роль пользователя (admin-only)
+- Method: PATCH
+- URL: `{{baseUrl}}/api/users/:id/role`
+- Header: `Authorization: Bearer {{token}}`
+- Body: `{ "role": "photographer" | "admin" | "viewer" }`
+- Доступно только admin. Меняет роль пользователя.
+
+13) Удаление фото (photographer/admin)
+- Method: DELETE
+- URL: `{{baseUrl}}/api/photos/:id`
+- Header: `Authorization: Bearer {{token}}`
+- Доступно владельцу фото (photographer) или admin.
+
+14) Удаление фото админом
+- Method: DELETE
+- URL: `{{baseUrl}}/api/photos/:id/admin-delete`
+- Header: `Authorization: Bearer {{token}}`
+- Доступно только admin. Удаляет любое фото.
+
+15) Удаление комментария (admin/author)
+- Method: DELETE
+- URL: `{{baseUrl}}/api/comments/:id`
+- Header: `Authorization: Bearer {{token}}`
+- Доступно владельцу комментария или admin.
+
 ---
 
 ## 5) Примеры cURL
