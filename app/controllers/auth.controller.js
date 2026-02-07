@@ -1,12 +1,20 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const sendEmail = require('../utils/email');
 
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
     const user = new User({ username, email, password, role });
     await user.save();
-    res.status(201).json({ message: 'User registered' });
+
+    await sendEmail({
+      email: user.email,
+      subject: 'Добро пожаловать в Uralsk-Lens!',
+      message: `Привет, ${user.username}! Спасибо за регистрацию на Uralsk-Lens! Мы рады видеть вас в нашем сообществе фотографов. Теперь вы можете создавать альбомы, загружать фотографии и делиться ими с другими. Если у вас есть какие-либо вопросы, не стесняйтесь обращаться к нам. Удачных снимков!`
+    });
+    
+    res.status(201).json({ message: 'User registered and welcome email sent!' });
   } catch (err) {
     if (err.code === 11000) return res.status(400).json({ message: 'User already exists' });
     next(err);

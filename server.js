@@ -26,6 +26,7 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/photo.routes")(app);
 require("./app/routes/album.routes")(app);
 require("./app/routes/comment.routes")(app);
+app.use('/api', require("./app/routes/mailing.routes"));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
