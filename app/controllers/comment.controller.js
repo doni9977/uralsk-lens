@@ -20,8 +20,7 @@ exports.deleteComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById(req.params.id);
     if (!comment) return res.status(404).json({ message: 'Not found' });
-    if (comment.user.toString() !== req.userId && req.userRole !== 'admin') return res.status(403).json({ message: 'Forbidden' });
-    await comment.remove();
+    await comment.deleteOne(); 
     res.json({ message: 'Deleted' });
   } catch (err) { next(err); }
 };

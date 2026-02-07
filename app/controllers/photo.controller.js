@@ -52,7 +52,6 @@ exports.updatePhoto = async (req, res, next) => {
   try {
     const photo = await Photo.findById(req.params.id);
     if (!photo) return res.status(404).json({ message: 'Not found' });
-    // only owner or admin
     if (photo.user.toString() !== req.userId && req.userRole !== 'admin') return res.status(403).json({ message: 'Forbidden' });
     const { title, description, category } = req.body;
     if (title) photo.title = title;
@@ -81,5 +80,14 @@ exports.likePhoto = async (req, res, next) => {
     if (idx === -1) photo.likes.push(req.userId); else photo.likes.splice(idx, 1);
     await photo.save();
     res.json(photo);
+  } catch (err) { next(err); }
+};
+
+exports.adminDeletePhoto = async (req, res, next) => {
+  try {
+    const photo = await Photo.findById(req.params.id);
+    if (!photo) return res.status(404).json({ message: 'Not found' });
+    await photo.deleteOne(); 
+    res.json({ message: 'Deleted by admin' });
   } catch (err) { next(err); }
 };

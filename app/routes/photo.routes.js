@@ -36,6 +36,12 @@ router.delete('/api/photos/:id', [
   check('id').isMongoId().withMessage('Invalid photo id')
 ], validate, photo.deletePhoto);
 
+router.delete('/api/photos/:id/admin-delete', [
+  verifyToken,
+  isRole('admin'),
+  check('id').isMongoId().withMessage('Invalid photo id')
+], validate, photo.adminDeletePhoto);
+
 router.put('/api/photos/:id/like', [
   verifyToken,
   check('id').isMongoId().withMessage('Invalid photo id')
