@@ -73,7 +73,6 @@
   opacity: 0.75;
 }
 
-/* Auth modal (if used in modal) */
 .auth-modal {
   display: none !important;
 }

@@ -4,7 +4,7 @@ exports.createPhoto = async (req, res, next) => {
   try {
     const { title, description, category, lat, lng } = req.body;
     if (!req.file) return res.status(400).json({ message: 'Image file required' });
-    const imageUrl = `/uploads/${req.file.filename}`;
+    const imageUrl = req.file.path;
     const photo = new Photo({ title, description, category, imageUrl, location: { lat, lng }, user: req.userId });
     await photo.save();
     res.status(201).json(photo);
