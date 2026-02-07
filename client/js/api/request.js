@@ -90,6 +90,16 @@ export async function updateProfile(updates) {
   });
 }
 
+// Получить всех пользователей (для админа)
+export async function getAllUsers() {
+  return request('/users', { method: 'GET' });
+}
+
+// Назначить фотографом
+export async function setPhotographer(userId) {
+  return request(`/users/${userId}/set-photographer`, { method: 'PUT' });
+}
+
 // Photos
 export async function getPhotos(query = {}) {
   const params = new URLSearchParams();

@@ -14,12 +14,16 @@ export async function renderNavbar(container = document.querySelector('body')){
       <ul>
         <li><a href="/client/index.html">Главная</a></li>
         <li><a href="/client/gellery.html">Галерея</a></li>
-        <li><a href="/client/map.html">Карта</a></li>
-        <li><a href="/client/photo.html">Загрузить</a></li>`;
+        <li><a href="/client/map.html">Карта</a></li>`;
 
+  let showUpload = false;
   if (token) {
     try {
       const profile = await getProfile();
+      if (profile.role === 'photographer' || profile.role === 'admin') {
+        showUpload = true;
+      }
+      navHTML += showUpload ? `<li><a href="/client/photo.html">Загрузить</a></li>` : '';
       navHTML += `
         <li><a href="/client/profile.html">Профиль</a></li>
         <li class="nav-user">

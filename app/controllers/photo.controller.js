@@ -66,8 +66,11 @@ exports.deletePhoto = async (req, res, next) => {
   try {
     const photo = await Photo.findById(req.params.id);
     if (!photo) return res.status(404).json({ message: 'Not found' });
-    if (photo.user.toString() !== req.userId && req.userRole !== 'admin') return res.status(403).json({ message: 'Forbidden' });
-    await photo.remove();
+    // Проверка: admin или владелец фото
+    if (req.userRole !== 'admin' && String(photo.user) !== String(req.userId)) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    await photo.deleteOne();
     res.json({ message: 'Deleted' });
   } catch (err) { next(err); }
 };

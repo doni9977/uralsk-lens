@@ -2,7 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const auth = require('../controllers/auth.controller');
-const { verifyToken } = require('../middlewares/authJwt');
+const { verifyToken, isRole } = require('../middlewares/authJwt');
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -10,32 +10,50 @@ const validate = (req, res, next) => {
   next();
 };
 
+// --- АВТОРИЗАЦИЯ ---
 router.post('/api/auth/register', [
   check('username').notEmpty().withMessage('Username required'),
-  check('email')
-    .isEmail().withMessage('Valid email required')
-    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).withMessage('Email must contain @ and a dot after it'),
+  check('email').isEmail().withMessage('Valid email required'),
   check('password').isLength({ min: 6 }).withMessage('Password min 6 chars')
 ], validate, auth.register);
 
 router.post('/api/auth/login', [
-  check('email')
-    .isEmail()
-    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).withMessage('Email must contain @ and a dot after it'),
+  check('email').isEmail(),
   check('password').notEmpty()
 ], validate, auth.login);
 
+// --- ПРОФИЛЬ ---
 router.get('/api/users/profile', verifyToken, auth.profile);
 
-// NEW: Update user profile
 router.put('/api/users/profile', [
   verifyToken,
-  check('username').optional().notEmpty().withMessage('Username cannot be empty'),
-  check('email').optional()
-    .isEmail().withMessage('Valid email required')
-    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).withMessage('Email must contain @ and a dot after it'),
-  check('bio').optional().isString(),
-  check('avatar').optional().isString()
+  check('username').optional().notEmpty(),
+  check('email').optional().isEmail()
 ], validate, auth.updateProfile);
+
+// --- АДМИН: СПИСОК ВСЕХ ПОЛЬЗОВАТЕЛЕЙ (ТО, ЧЕГО НЕ ХВАТАЛО) ---
+router.get('/api/users', [verifyToken, isRole('admin')], async (req, res, next) => {
+  try {
+    const User = require('../models/user.model');
+    const users = await User.find().select('-password'); // Находим всех без паролей
+    res.json(users);
+  } catch (err) { next(err); }
+});
+
+// --- АДМИН: НАЗНАЧИТЬ ФОТОГРАФОМ ---
+router.put('/api/users/:id/set-photographer', [
+  verifyToken,
+  isRole('admin'),
+  check('id').isMongoId().withMessage('Invalid user id')
+], async (req, res, next) => {
+  try {
+    const User = require('../models/user.model');
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    user.role = 'photographer';
+    await user.save();
+    res.json({ message: 'Role updated to photographer', user });
+  } catch (err) { next(err); }
+});
 
 module.exports = (app) => app.use('/', router);
