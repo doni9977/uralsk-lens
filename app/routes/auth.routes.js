@@ -10,7 +10,6 @@ const validate = (req, res, next) => {
   next();
 };
 
-// --- АВТОРИЗАЦИЯ ---
 router.post('/api/auth/register', [
   check('username').notEmpty().withMessage('Username required'),
   check('email').isEmail().withMessage('Valid email required'),
@@ -22,7 +21,6 @@ router.post('/api/auth/login', [
   check('password').notEmpty()
 ], validate, auth.login);
 
-// --- ПРОФИЛЬ ---
 router.get('/api/users/profile', verifyToken, auth.profile);
 
 router.put('/api/users/profile', [
@@ -31,16 +29,14 @@ router.put('/api/users/profile', [
   check('email').optional().isEmail()
 ], validate, auth.updateProfile);
 
-// --- АДМИН: СПИСОК ВСЕХ ПОЛЬЗОВАТЕЛЕЙ (ТО, ЧЕГО НЕ ХВАТАЛО) ---
 router.get('/api/users', [verifyToken, isRole('admin')], async (req, res, next) => {
   try {
     const User = require('../models/user.model');
-    const users = await User.find().select('-password'); // Находим всех без паролей
+    const users = await User.find().select('-password'); 
     res.json(users);
   } catch (err) { next(err); }
 });
 
-// --- АДМИН: НАЗНАЧИТЬ ФОТОГРАФОМ ---
 router.put('/api/users/:id/set-photographer', [
   verifyToken,
   isRole('admin'),

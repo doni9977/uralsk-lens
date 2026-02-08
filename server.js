@@ -13,12 +13,10 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 
-// Serve client index as the root page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "index.html"));
 });
 
-// Serve /client assets from this repo
 app.use("/client", express.static(path.join(__dirname, "client")));
 
 

@@ -1,4 +1,3 @@
-// Auth modal component (listens to 'showAuth' CustomEvent)
 (function(){
   const body = document.body;
   function createAuthModal(){

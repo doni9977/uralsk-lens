@@ -94,11 +94,27 @@
       cursor: pointer;
       font-weight: 600;
     }
+    .album-section {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .album-section h2 {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .album-empty {
+      color: #999;
+      text-align: center;
+      padding: 40px 20px;
+    }
   </style>
 </head>
 <body>
   <main class="main">
     <div id="profileContent"></div>
+    <div id="albumSection" class="album-section"></div>
   </main>
   <footer class="footer">© Портфолио Уральска</footer>
   <script type="module" src="/client/js/pages/profile.js"></script>

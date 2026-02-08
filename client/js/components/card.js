@@ -11,7 +11,6 @@ export function createCard(photo) {
     </div>
   `;
 
-  // --- ЛОГИКА RBAC ---
   let user = null;
   const token = localStorage.getItem('auth_token');
 
@@ -22,18 +21,14 @@ export function createCard(photo) {
     console.error("Ошибка чтения юзера:", e);
   }
 
-  // 1. Приводим всё к строкам для точного сравнения
   const myId = user ? String(user.id) : null;
-  // Ищем ID владельца в разных полях (backend может присылать по-разному)
   const ownerRaw = photo.owner?._id || photo.owner || photo.user?._id || photo.user;
   const ownerId = ownerRaw ? String(ownerRaw) : null;
 
-  // 2. Проверяем права
   const isAdmin = user && user.role === 'admin';
   const isOwner = myId && ownerId && (myId === ownerId);
   const canDelete = token && (isAdmin || isOwner);
 
-  // 3. ОТЛАДКА В КОНСОЛЬ (Чтобы мы увидели, что код работает)
   console.log(`ФОТО: ${photo.title}`, {
     Я_Админ: isAdmin,
     Я_Владелец: isOwner,
@@ -42,12 +37,10 @@ export function createCard(photo) {
     ИТОГ_КНОПКА_БУДЕТ: canDelete
   });
 
-  // 4. Рисуем кнопку
   if (canDelete) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Удалить 🗑';
     
-    // Яркие стили, чтобы точно заметить
     deleteBtn.style.cssText = `
         background: red; 
         color: white; 
@@ -84,7 +77,6 @@ export function createCard(photo) {
     el.appendChild(deleteBtn);
   }
 
-  // Клик по карточке
   el.addEventListener('click', () => {
     window.dispatchEvent(new CustomEvent('openPhoto', { detail: photo }));
   });

@@ -34,7 +34,6 @@ function refresh(q = '') {
   render(items);
 }
 
-// modal elements
 const modal = document.getElementById('photoModal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
@@ -47,7 +46,6 @@ const modalClose = document.getElementById('modalClose');
 let currentPhotoId = null;
 let currentPhoto = null;
 
-// --- RBAC ---
 let user = null;
 try {
   const userStr = localStorage.getItem('user');
@@ -55,24 +53,20 @@ try {
 } catch (e) {}
 const token = localStorage.getItem('auth_token');
 
-// --- Кнопка удаления фото в модальном окне (БЕЗ ПАНЕЛИ УПРАВЛЕНИЯ) ---
 function renderDeletePhotoButton(photo) {
   const modalRight = document.getElementById('photoModal')?.querySelector('.right');
   if (!modalRight) return;
 
-  // Удаляем старую кнопку перед отрисовкой новой
   const oldBtn = modalRight.querySelector('.btn-danger');
   if (oldBtn) oldBtn.remove();
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const myId = String(user.id);
-  // Проверяем владельца (owner или user._id в зависимости от ответа сервера)
   const ownerId = String(photo.user?._id || photo.user || photo.owner);
   
   const isAdmin = user.role === 'admin';
   const isOwner = myId === ownerId;
 
-  // Если админ или владелец — рисуем кнопку удаления сразу
   if (isAdmin || isOwner) {
     const btn = document.createElement('button');
     btn.textContent = 'Удалить фото';
@@ -124,7 +118,7 @@ async function openModal(id) {
   try {
     const comments = await getComments(id);
     renderComments(comments, currentPhoto);
-    // Теперь вызываем только прямую кнопку удаления
+
     renderDeletePhotoButton(currentPhoto);
   } catch (err) {
     console.error('Ошибка загрузки комментариев:', err);
@@ -139,7 +133,6 @@ function closeModal() {
   currentPhoto = null;
 }
 
-// --- Рендеринг комментариев с прямым удалением ---
 function renderComments(comments, photo) {
   const commentsList = document.getElementById('modalComments');
   commentsList.innerHTML = '';
@@ -158,7 +151,6 @@ function renderComments(comments, photo) {
         <div>${escapeHTML(c.text)}</div>
       </div>`;
 
-    // Кнопка удаления только для admin или автора комментария
     if (user.role === 'admin' || String(user.id) === String(c.user?._id || c.user || c.author)) {
       const del = document.createElement('button');
       del.textContent = '×';
@@ -180,7 +172,6 @@ function renderComments(comments, photo) {
   });
 }
 
-// --- Админ-панель: СПИСОК ВСЕХ ПОЛЬЗОВАТЕЛЕЙ с кнопкой "Set Photographer" ---
 async function renderSetPhotographerUI() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   if (user.role !== 'admin') return;
@@ -196,7 +187,6 @@ async function renderSetPhotographerUI() {
   const container = document.getElementById('profileContent');
   if (!container) return;
 
-  // Создаем область для списка
   const listArea = document.createElement('div');
   listArea.className = 'admin-user-list-section';
   listArea.innerHTML = '<hr><h2>Список всех пользователей</h2>';
@@ -206,7 +196,6 @@ async function renderSetPhotographerUI() {
     row.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;';
     row.innerHTML = `<span>${u.username} (<b>${u.role}</b>)</span>`;
 
-    // Кнопка повышения, если он еще не фотограф
     if (u.role === 'viewer') {
       const btn = document.createElement('button');
       btn.textContent = 'Set Photographer';
@@ -214,9 +203,8 @@ async function renderSetPhotographerUI() {
       
       btn.onclick = async () => {
         if (!confirm(`Сделать ${u.username} фотографом?`)) return;
-        // Используем твой URL
         const resp = await fetch(`http://localhost:8080/api/users/${u._id}/set-photographer`, {
-          method: 'PUT', // Если бэкенд ждет PUT, оставляем PUT
+          method: 'PUT', 
           headers: { 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') }
         });
 
@@ -236,7 +224,6 @@ async function renderSetPhotographerUI() {
   container.appendChild(listArea);
 }
 
-// --- Остальные события (Like, Search, Close) ---
 likeBtn.addEventListener('click', async () => {
   if (!currentPhotoId) return;
   try {
@@ -272,6 +259,5 @@ function escapeHTML(str) {
   }[c]));
 }
 
-// Запуск
 loadPhotos();
 renderSetPhotographerUI();

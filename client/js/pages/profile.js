@@ -1,5 +1,6 @@
 import { renderNavbar } from '../components/navbar.js';
-import { getAuthToken, getProfile, updateProfile } from '../api/request.js';
+import { getAuthToken, getProfile, updateProfile, getAlbums } from '../api/request.js';
+import { createCard } from '../components/card.js';
 
 renderNavbar(document.body);
 
@@ -10,13 +11,10 @@ if (!token) {
 
 const el = document.getElementById('profileContent');
 
-// 1. Основная функция загрузки профиля
 async function loadProfile() {
   if (!el) return;
   try {
     const user = await getProfile();
-    
-    // Рендерим карточку профиля и создаем место для списка админа (adminArea)
     el.innerHTML = `
       <div class="profile-card">
         <div class="profile-avatar">
@@ -52,7 +50,6 @@ async function loadProfile() {
 
     setupEventListeners(el, user);
 
-    // Если зашел админ — сразу запускаем рендер списка всех юзеров
     if (user.role === 'admin') {
       renderAdminUserList();
     }
@@ -62,7 +59,6 @@ async function loadProfile() {
   }
 }
 
-// 2. Функция для кнопок редактирования
 function setupEventListeners(container, user) {
   const editProfileBtn = container.querySelector('#editProfileBtn');
   const editForm = container.querySelector('#editForm');
@@ -87,13 +83,13 @@ function setupEventListeners(container, user) {
   }
 }
 
-// 3. Админ-панель: Список ВСЕХ пользователей с кнопкой повышения
+
 async function renderAdminUserList() {
   const adminArea = document.getElementById('adminArea');
   if (!adminArea) return;
 
   try {
-    // ВАЖНО: Убедись, что бэкенд отдает список по этому адресу
+
     const res = await fetch('http://localhost:8080/api/users', {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') }
     });
@@ -130,7 +126,6 @@ async function renderAdminUserList() {
         </div>
       `;
 
-      // Добавляем кнопку "Сделать фотографом" только для viewer-ов
       if (u.role === 'viewer') {
         const btn = document.createElement('button');
         btn.textContent = 'Сделать фотографом';
@@ -148,7 +143,6 @@ async function renderAdminUserList() {
           if (!confirm(`Назначить ${u.username} фотографом?`)) return;
           
           try {
-            // Твой роут для повышения роли
             const resp = await fetch(`http://localhost:8080/api/users/${u._id}/set-photographer`, {
               method: 'PUT', 
               headers: { 
@@ -159,7 +153,7 @@ async function renderAdminUserList() {
 
             if (resp.ok) {
               row.querySelector('.role-display').textContent = 'photographer';
-              btn.remove(); // Убираем кнопку после успеха
+              btn.remove(); 
               alert('Пользователь повышен!');
             } else {
               alert('Ошибка сервера при смене роли');
@@ -179,5 +173,35 @@ async function renderAdminUserList() {
   }
 }
 
-// Запуск всей логики
+
+async function loadAlbum() {
+  const albumSection = document.getElementById('albumSection');
+  if (!albumSection) return;
+
+  try {
+    const data = await getAlbums();
+    const photos = data.photos || [];
+
+    if (photos.length === 0) {
+      albumSection.innerHTML = '<div class="album-empty">Вы ещё не добавили фото в альбом</div>';
+      return;
+    }
+
+    albumSection.innerHTML = '<h2>Мой альбом: Лайкнутые фото</h2>';
+    const gallery = document.createElement('div');
+    gallery.className = 'gallery-grid';
+
+    photos.forEach(photo => {
+      gallery.appendChild(createCard(photo));
+    });
+
+    albumSection.appendChild(gallery);
+  } catch (err) {
+    albumSection.innerHTML = `<p style="color: red;">Ошибка загрузки альбома: ${err.message}</p>`;
+  }
+}
+
+
+
 loadProfile();
+loadAlbum();

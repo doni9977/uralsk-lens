@@ -13,7 +13,6 @@ const photoSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
-// text index for search
 photoSchema.index({ title: 'text', description: 'text' });
 
 module.exports = mongoose.model('Photo', photoSchema);

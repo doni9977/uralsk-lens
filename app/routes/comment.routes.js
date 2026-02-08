@@ -20,7 +20,6 @@ router.post('/api/photos/:id/comments', [
 	check('text').notEmpty().withMessage('Comment text required')
 ], validate, comment.addComment);
 
-// Исправляем delete: теперь доступно для admin и владельца комментария
 router.delete('/api/comments/:id', [
 	verifyToken,
 	check('id').isMongoId().withMessage('Invalid comment id')

@@ -5,7 +5,7 @@ const { sendMail } = require('../config/mailer');
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
-    // Если роль не передана, по умолчанию ставим 'viewer'
+
     const user = new User({ 
         username, 
         email, 
@@ -32,29 +32,25 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     
-    // 1. Ищем пользователя
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
     
-    // 2. Проверяем пароль
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
     
-    // 3. Создаем токен
     const token = jwt.sign(
         { id: user._id, role: user.role }, 
         process.env.JWT_SECRET || 'CHANGE_ME', 
         { expiresIn: '7d' }
     );
-    
-    // 4. ГЛАВНОЕ ИСПРАВЛЕНИЕ: Отправляем user вместе с токеном
+
     res.json({ 
         token,
         user: {
             id: user._id,
             username: user.username,
             email: user.email,
-            role: user.role // <--- Именно это нужно фронтенду
+            role: user.role 
         }
     });
   } catch (err) {
