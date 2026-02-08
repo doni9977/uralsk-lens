@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const { sendMail } = require('../config/mailer');
 
 exports.register = async (req, res, next) => {
   try {
@@ -13,6 +14,14 @@ exports.register = async (req, res, next) => {
     });
     await user.save();
     res.status(201).json({ message: 'User registered' });
+
+    sendMail({
+      to: email,
+      subject: 'Добро пожаловать в Uralsk Lens',
+      text: `Здравствуйте, ${username || 'друг'}! Спасибо за регистрацию.`,
+    }).catch((err) => {
+      console.warn('Failed to send welcome email:', err.message);
+    });
   } catch (err) {
     if (err.code === 11000) return res.status(400).json({ message: 'User already exists' });
     next(err);

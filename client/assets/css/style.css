@@ -370,11 +370,6 @@ body{
 .landing .contact-cta{background:var(--footer);color:#fff;padding:36px 8%;display:flex;gap:20px}
 .landing .contact-left{flex:1}
 .landing .contact-left h3{margin:0 0 8px;font-family:'Playfair Display', serif}
-.landing .contact-right{flex:1}
-.landing .subscribe label{display:block;margin-bottom:8px}
-.landing .input-row{display:flex;gap:8px}
-.landing .input-row input{flex:1;padding:10px;border-radius:6px;border:none}
-.landing .input-row button{background:var(--accent);border:none;color:#fff;padding:10px 14px;border-radius:6px}
 
 .landing footer{background:var(--footer);color:#fff}
 .landing .footer-top{padding:36px 8%;display:flex;justify-content:space-between;gap:20px}

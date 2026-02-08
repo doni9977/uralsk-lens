@@ -89,10 +89,6 @@ body{
 .contact-left{flex:1}
 .contact-left h3{margin:0 0 8px;font-family:'Playfair Display', serif}
 .contact-right{flex:1}
-.subscribe label{display:block;margin-bottom:8px}
-.input-row{display:flex;gap:8px}
-.input-row input{flex:1;padding:10px;border-radius:6px;border:none}
-.input-row button{background:var(--accent);border:none;color:#fff;padding:10px 14px;border-radius:6px}
 
 /* FOOTER */
 .footer-top{background:var(--footer);color:#fff;padding:36px 8%;display:flex;justify-content:space-between;gap:20px}
