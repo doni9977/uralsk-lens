@@ -23,7 +23,15 @@ npm install
 ```
 MONGO_URI=mongodb://...   # optional; without it server still runs
 JWT_SECRET=your_secret
-PORT=5000
+PORT=8080
+CLOUDINARY_CLOUD_NAME=dcgfcve46
+CLOUDINARY_API_KEY=secret
+CLOUDINARY_API_SECRET=secret
+SMTP_HOST=smtp-relay.brevo.com
+SMTP_PORT=587
+SMTP_USER=a1d44a001@smtp-brevo.com
+SMTP_PASS=secret
+SMTP_FROM=doniffakk1@gmail.com
 ```
 
 3. Start the server
@@ -57,8 +65,6 @@ Photos
   - Response: list of photos populated with `user` (username, avatar)
 - GET /api/photos/categories
   - Response: array of distinct category names
-- GET /api/photos/map
-  - Response: photos that include `location` (lat/lng) — used by the map page
 - GET /api/photos/:id
   - Response: single photo object
 - POST /api/photos (protected)
@@ -112,7 +118,7 @@ Key backend files
  — view and edit profile.
 
 - Map <img width="1898" height="977" alt="image" src="https://github.com/user-attachments/assets/02d5ed51-7b06-4fb8-9c87-6f1fbe1efe6a" />
- — shows geotagged photos on a map via `/api/photos/map`.
+ — shows map via `/api/photos/map`.
 
 - Album pages <img width="1919" height="925" alt="image" src="https://github.com/user-attachments/assets/0eba8b23-9865-4a83-9a31-05eaca13fec1" />
  — create an album and add photos.
@@ -128,3 +134,11 @@ Key backend files
 - `MONGO_URI` — MongoDB connection string (optional; server can run without it but DB features will be disabled)
 - `JWT_SECRET` — secret for signing JWT tokens (default in code: `CHANGE_ME` — replace in production)
 - `PORT` — port to run server
+- `CLOUDINARY_CLOUD_NAME` — cloud name
+- `CLOUDINARY_API_KEY` — cloud api key
+- `CLOUDINARY_API_SECRET` — api secret
+- `SMTP_HOST` — smtp host adress
+- `SMTP_PORT` — port for smtp
+- `SMTP_USER` — user adress
+- `SMTP_PASS` — password
+- `SMTP_FROM` — from email adress
